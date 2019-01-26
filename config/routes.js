@@ -32,8 +32,22 @@ function register(req, res) {
 
   db('users')
   .insert(creds)
+  // get ids back after inserting user creds
   .then(ids => {
-      res.status(201).send(ids);
+      const id = ids[0];
+
+      // find the user by id and grab user from db with any additional info we may need from the user
+      db('users')
+      .where({ id })
+      .first()
+      // pass user to generate a token
+      .then(user => {
+        //generate a token
+        const token = generateToken(user);
+        //pass token to user
+        res.status(201).json({ id:user.id, token });
+      })
+      .catch(err => res.status(500).send(err));
   })
   .catch(err => res.status(500).send(err));
   };
