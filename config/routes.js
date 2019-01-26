@@ -11,47 +11,70 @@ module.exports = server => {
   server.get('/api/jokes', authenticate, getJokes);
 };
 
-function generateToken(username) {
+function generateToken(user) {
   const payload = {
-    username: user.username,
+      username: user.username,
   };
-  const secret = 'laaammmbda';
+  const secret = 'secretkey!';
   const options = {
-    expiresIn: '1hr',
-    jwtid: '12345'
-  }
+      expiresIn: '1h',
+      jwtid: '12345'
+  };
   return jwt.sign(payload, secret, options);
 }
 
+ // --- REGISTRATION --- //
 function register(req, res) {
   // implement user registration
   const creds = req.body;
-
-  const hash = bcrypt.hashSync(creds.password, 14);
+  const hash = bcrypt.hashSync(creds.password, 10);
   creds.password = hash;
 
   db('users')
   .insert(creds)
   .then(ids => {
-    const id = ids[0];
-    db('users')
-    .where({id})
-    .first
-    then(user => {
-      const token = generateToken(user);
-      res.status(201).json({id: user.id, token})
-    })
-    .catch(err => res.status(500).send(err));
+      res.status(201).send(ids);
   })
-  .catch(err =>res.status(500).json(err));
-};
+  .catch(err => res.status(500).send(err));
+  };
 
+  // --- LOGIN --- //
 function login(req, res) {
   // implement user login
-  const  creds = req.body;
+  const creds = req.body;
 
+   db('users')
+   .where({ username: creds.username })
+   .first()
+   .then(user => {
+       if (user && bcrypt.compareSync(creds.password, user.password)) {
+           //const token = generateToken(user);
+           res.status(200).json({message: `Welcome!${user.username}`});
+       } else {
+           res.status(401).json({ message: 'You shall not pass!' });
+       }
+   })
+   .catch(err => res.status(500).send(err));
+  }
+
+  /// --- PROTECT ROUTE --- ///
+  function protected(req, res, next) {
+    const token = req.headers.authorization;
+    if(token) {
+        jwt.verify(token, secret, (err, decodedToken) => {
+            if(err) {
+                res.status(401).json({ message: 'Invalid Token'});
+            } else {
+               req.username = decodedToken.username;
+               next();
+            }
+        });
+    } else {
+        res.status(401).json({ message: 'No token provided' })
+    }
 }
 
+/// --- GET JOKES --- ///
 function getJokes(req, res) {
   const requestOptions = {
     headers: { accept: 'application/json' },
