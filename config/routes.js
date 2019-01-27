@@ -3,25 +3,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../database/dbConfig');
 
-const { authenticate } = require('../auth/authenticate');
+const { authenticate, generateToken } = require('../auth/authenticate');
 
 module.exports = server => {
   server.post('/api/register', register);
   server.post('/api/login', login);
   server.get('/api/jokes', authenticate, getJokes);
 };
-
-function generateToken(user) {
-  const payload = {
-      username: user.username,
-  };
-  const secret = 'secretkey!';
-  const options = {
-      expiresIn: '1h',
-      jwtid: '12345'
-  };
-  return jwt.sign(payload, secret, options);
-}
 
  // --- REGISTRATION --- //
 function register(req, res) {
@@ -61,32 +49,19 @@ function login(req, res) {
    .where({ username: creds.username })
    .first()
    .then(user => {
+     // check if user's password match the user password in the database
        if (user && bcrypt.compareSync(creds.password, user.password)) {
-           //const token = generateToken(user);
-           res.status(200).json({message: `Welcome!${user.username}`});
+         // If password match generate a token
+          const token = generateToken(user);
+          // Attach token to the response
+           res.status(200).json({message: `Welcome ${user.username}!`, token});
        } else {
+         // If password doesn't match return status 401
            res.status(401).json({ message: 'You shall not pass!' });
        }
    })
    .catch(err => res.status(500).send(err));
   }
-
-  /// --- PROTECT ROUTE --- ///
-  function protected(req, res, next) {
-    const token = req.headers.authorization;
-    if(token) {
-        jwt.verify(token, secret, (err, decodedToken) => {
-            if(err) {
-                res.status(401).json({ message: 'Invalid Token'});
-            } else {
-               req.username = decodedToken.username;
-               next();
-            }
-        });
-    } else {
-        res.status(401).json({ message: 'No token provided' })
-    }
-}
 
 /// --- GET JOKES --- ///
 function getJokes(req, res) {

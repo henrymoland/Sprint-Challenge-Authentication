@@ -1,14 +1,38 @@
 const jwt = require('jsonwebtoken');
 
-const jwtKey =
+const jwtKey = 
   process.env.JWT_SECRET ||
   'add a .env file to root of project with the JWT_SECRET variable';
 
 // quickly see what this file exports
 module.exports = {
   authenticate,
+  generateToken
 };
 
+//--- Function to generate a token ---//
+function generateToken(user) {
+  const payload = {
+      username: user.username,
+  };
+  const options = {
+      expiresIn: '1h',
+      jwtid: '12345'
+  };
+  return jwt.sign(payload, jwtKey, options);
+}
+
+//--- Function to generate a token ---//
+function generateToken(user) {
+  const payload = {
+      username: user.username,
+  };
+  const options = {
+      expiresIn: '1h',
+      jwtid: '12345'
+  };
+  return jwt.sign(payload, jwtKey, options);
+}
 
 // implementation details
 function authenticate(req, res, next) {
