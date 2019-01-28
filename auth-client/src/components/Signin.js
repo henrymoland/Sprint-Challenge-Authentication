@@ -25,6 +25,7 @@ class Signin extends Component {
         .then(res => {
             localStorage.setItem('jwt', res.data.token);
             console.log("response from api", res.data)
+            this.props.history.push('/jokes')
         })
         .catch(err => {
             console.log("Error from api", err)

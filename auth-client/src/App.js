@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Signup from './components/Signup';
 import Signin from './components/Signin';
 import Jokes from './components/Jokes';
+import About from './components/About';
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
         
         <Switch>
           <Route exact path="/" component={ Home } />
+          <Route exact path="/about" component={ About } />
           <Route path="/signup" component={ Signup } />
           <Route path="/signin" component={ Signin } />
           <Route path="/jokes" component={ Jokes } />

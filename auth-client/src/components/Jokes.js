@@ -6,6 +6,7 @@ import Axios from 'axios';
 class Signin extends Component {
     state = {
         jokes: [],
+        
     }
 
     componentDidMount() {
@@ -16,14 +17,19 @@ class Signin extends Component {
                 Authorization: token
             }
         };
-        Axios.get(endpoint, options)
-        .then(res => {
-            this.setState({jokes: res.data})
-            console.log('data from api/jokes', res.data); 
-        })
-        .catch(err => {
-            console.log('err from api/jokes', err)
-        })
+        if (token) {
+            Axios.get(endpoint, options)
+            .then(res => {
+                this.setState({ jokes: res.data});
+                console.log('data from api/jokes', res.data); 
+            })
+            .catch(err => {
+                
+                console.log('err from api/jokes', err)
+            })
+        } else {
+            
+        }
     }
   render() {
     return (

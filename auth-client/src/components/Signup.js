@@ -1,17 +1,36 @@
 import React, { Component } from 'react';
 import Navigation from './Navigation';
 import '../App.css';
+import Axios from 'axios';
+
 
 class Signup extends Component {
     state = {
         username: "",
         password: ""
     }
+
     handleOnChange = (e) => {
-        this.setState ({
-            [e.target.id]: e.target.value
-        })
+        this.setState({ [e.target.id]: e.target.value })
     }
+
+    handleSubmit = (e) => {
+        const newUser = {
+            username: this.state.username,
+            password: this.state.password
+        };
+
+        const endpoint ='http://localhost:3300/api/register';
+
+        Axios.post(endpoint, newUser)
+        .then(res => {
+           this.props.history.push('/signin')
+        })
+        .catch(err => {
+            console.log('Err')
+        })
+        
+    };
 
   render() {
     return (
@@ -36,15 +55,15 @@ class Signup extends Component {
                         </div>
                         <div className="col s12 m6">
                             <div className="card-panel grey lighten-4 grey-text text-darken-4 z-depth-0">
-                                <form>
+                                <form onSubmit={ this.onSubmit }>
                                     <h5 className="center grey-text text-darken-4">Sign Up</h5>
                                     <p className="center grey-text text-darken-4">It's free and only takes a minute</p>
                                     <div className="input-field">
-                                        <input type="text" id="username" value={ this.username }/>
+                                        <input type="text" id="username" value={ this.state.username } onChange={ this.handleOnChange }/>
                                         <label htmlFor="username">Username</label>
                                     </div>
                                     <div className="input-field">
-                                        <input type="password" id="password" value={ this.password } />
+                                        <input type="password" id="password" value={ this.state.password } onChange={ this.handleOnChange } />
                                         <label htmlFor="password">Password</label>
                                     </div>
                                     <input type="submit" value="signup" className="btn btn-large red btn-extend"/>

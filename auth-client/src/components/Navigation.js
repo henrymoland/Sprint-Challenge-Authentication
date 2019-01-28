@@ -15,7 +15,7 @@ const Navigation = () => {
             <ul className="right">
                 <li><NavLink to ="/about">About Dad Jokes</NavLink></li>
                 <li><NavLink to ="/signup">Sign Up</NavLink></li>
-                <li><NavLink to ="/" onClick={ signOut }>Sign Out</NavLink></li>
+                <li><NavLink to ="/signin" onClick={ signOut }>Sign Out</NavLink></li>
                 <li><a href= "/signin" class="waves-effect waves-light btn red"><i class="material-icons left">lock</i>Sign In</a></li>
                 <li>
                     <a href="https://facebook.com">
