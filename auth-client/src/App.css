@@ -1,0 +1,40 @@
+.primary-overlay {
+  background: rgba(88, 13, 13, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  background-image: linear-gradient(to right, red , rgb(75, 4, 4));
+  background-size: cover;
+  height: 100vh;
+}
+
+.added-overlay {
+  background-image: linear-gradient(to right, red , rgba(65, 8, 8, 0));
+  background-size: cover;
+  height: 100vh;
+}
+.main-header {
+  background: url(./img/home.jpeg);
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  color: white;
+  position: relative;
+}
+
+.main-header .showcase {
+  padding-top: 100px;
+}
+
+.signup-section {
+  padding-top: 80px;
+}
+
+.dad-text {
+  color: red;
+}
