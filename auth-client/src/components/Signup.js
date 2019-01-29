@@ -15,21 +15,21 @@ class Signup extends Component {
     }
 
     handleSubmit = (e) => {
+        e.preventDefault();
+        const endpoint ='http://localhost:3300/api/register';
         const newUser = {
             username: this.state.username,
             password: this.state.password
         };
 
-        const endpoint ='http://localhost:3300/api/register';
-
         Axios.post(endpoint, newUser)
         .then(res => {
-           this.props.history.push('/signin')
+            console.log("user registered", res.data)
+            this.props.history.push('/signin')
         })
         .catch(err => {
-            console.log('Err')
-        })
-        
+            console.log("Error from api", err)
+        });  
     };
 
   render() {
@@ -55,7 +55,7 @@ class Signup extends Component {
                         </div>
                         <div className="col s12 m6">
                             <div className="card-panel grey lighten-4 grey-text text-darken-4 z-depth-0">
-                                <form onSubmit={ this.onSubmit }>
+                                <form onSubmit={ this.handleSubmit }>
                                     <h5 className="center grey-text text-darken-4">Sign Up</h5>
                                     <p className="center grey-text text-darken-4">It's free and only takes a minute</p>
                                     <div className="input-field">

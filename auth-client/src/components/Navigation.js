@@ -10,7 +10,7 @@ const Navigation = () => {
     return (
     <nav className="transparent">
         <div className="container">
-            <Link to="/" className="brand-logo"><span className="dad-text">Dad</span>Jokes</Link>
+            <Link to="/" className="brand-logo">Dad Jokes</Link>
     
             <ul className="right">
                 <li><NavLink to ="/about">About Dad Jokes</NavLink></li>

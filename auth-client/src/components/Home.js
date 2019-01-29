@@ -16,7 +16,7 @@ const Home = () => {
                         upadated database of jokes on the planet.
                     </p>
                     <br></br>
-                    <a href="#" className="btn btn-large white red-text" onClick="">Learn More</a>
+                    <a href="#" className="btn btn-large white red-text learn-btn" onClick="">Learn More</a>
                     <a href="/signup" className="btn btn-large red white-text" onClick="">Sign Up </a>
                     </div>
                 </div>

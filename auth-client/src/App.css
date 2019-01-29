@@ -38,3 +38,10 @@
 .dad-text {
   color: red;
 }
+
+.loading {
+  padding-top: 200px;
+}
+.learn-btn {
+  margin-right: 5px;
+}

@@ -24,7 +24,7 @@ class Signin extends Component {
         Axios.post(endpoint, credentials)
         .then(res => {
             localStorage.setItem('jwt', res.data.token);
-            console.log("response from api", res.data)
+            
             this.props.history.push('/jokes')
         })
         .catch(err => {

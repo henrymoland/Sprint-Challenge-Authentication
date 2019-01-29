@@ -6,7 +6,7 @@ import Axios from 'axios';
 class Signin extends Component {
     state = {
         jokes: [],
-        
+        loading: true
     }
 
     componentDidMount() {
@@ -20,7 +20,7 @@ class Signin extends Component {
         if (token) {
             Axios.get(endpoint, options)
             .then(res => {
-                this.setState({ jokes: res.data});
+                this.setState({ jokes: res.data, loading: false });
                 console.log('data from api/jokes', res.data); 
             })
             .catch(err => {
@@ -32,6 +32,22 @@ class Signin extends Component {
         }
     }
   render() {
+      if (this.state.loading) {
+          return (
+            <div className="header">
+            <div className="primary-overlay">
+                <div className="container">
+                    <div className="row signup-section">
+                        <div className="col s12">
+                            <h4 className="center white-text loading">Loading...</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+          )
+      }
+
     return (
         <div className="header">
             <div className="primary-overlay">
